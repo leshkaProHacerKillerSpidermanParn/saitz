@@ -1,2 +1,0 @@
-# saitz
-krutoy sait
