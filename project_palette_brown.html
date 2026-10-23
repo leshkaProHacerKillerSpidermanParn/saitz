@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>СВЯЗЬ ПОКОЛЕНИЙ — Республика Беларусь</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pureWhite: '#FFFFFF',
+                        softGray: '#ffffff',
+                        cardBorder: '#000000',
+                        darkText: '#ffffff',
+                        bodyText: '#000000',
+                        mutedText: '#64748B',
+                        cornflowerBlue: '#000000',
+                        cornflowerSoft: '#EFF6FF',
+                        ornamentRed: '#DC2626',
+                        ornamentRedSoft: '#FEF2F2'
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif']
+                    }
+                }
+            }
+        };
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Cormorant+Garamond:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fff;
+            color: #0F172A;
+            overflow-x: hidden;
+        }
+
+        .font-serif-bold {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-weight: 700;
+        }
+
+        .grid-bg {
+            background-size: 32px 32px;
+            background-image:
+                linear-gradient(to right, rgba(15,23,42,.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(15,23,42,.03) 1px, transparent 1px);
+        }
+
+        .ornament-pattern {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M12 0 L24 12 L12 24 L0 12 Z M12 4 L20 12 L12 20 L4 12 Z' fill='none' stroke='rgba(220,38,38,0.03)' stroke-width='1'/></svg>");
+            background-repeat: repeat;
+        }
+
+        .heavy-card {
+            background: #fff;
+            border: 2px solid #E2E8F0;
+            transition: all .35s cubic-bezier(.16,1,.3,1);
+        }
+
+        .heavy-card:hover {
+            border-color: #0F172A;
+            box-shadow: 0 12px 32px -8px rgba(15,23,42,.12);
+            transform: translateY(-4px);
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #F8F9FA; }
+        ::-webkit-scrollbar-thumb { background: #0F172A; border-radius: 4px; }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: all .8s cubic-bezier(.16,1,.3,1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .modal-backdrop {
+            background: rgba(15,23,42,.6);
+            backdrop-filter: blur(8px);
+        }
+
+        :focus-visible {
+            outline: 3px solid #DC2626;
+            outline-offset: 3px;
+        }
+
+        .hero-atmosphere {
+            background:
+                radial-gradient(ellipse at 16% 24%, rgba(220,38,38,.14), transparent 34%),
+                radial-gradient(ellipse at 86% 68%, rgba(15,23,42,.09), transparent 38%),
+                linear-gradient(135deg,#fff 0%,#fbf8f4 48%,#f5f5f5 100%);
+        }
+
+        .hero-atmosphere::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: .42;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cpath d='M90 10 L110 45 L145 45 L125 75 L140 110 L105 105 L90 145 L75 105 L40 110 L55 75 L35 45 L70 45 Z' fill='none' stroke='%23dc2626' stroke-opacity='.18' stroke-width='1.5'/%3E%3Ccircle cx='90' cy='78' r='18' fill='none' stroke='%230f172a' stroke-opacity='.12'/%3E%3C/svg%3E");
+            background-size: 180px 180px;
+            mask-image: linear-gradient(to bottom, black, transparent 92%);
+        }
+
+        .hero-stamp {
+            box-shadow: 0 18px 55px rgba(15,23,42,.10);
+            backdrop-filter: blur(8px);
+        }
+
+        .section-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: .55rem;
+        }
+
+        .section-kicker::before {
+            content: "";
+            width: 24px;
+            height: 2px;
+            background: #dc2626;
+            display: inline-block;
+        }
+
+        .timeline-year {
+            font-variant-numeric: tabular-nums;
+            letter-spacing: .08em;
+        }
+
+        .map-region {
+            cursor: pointer;
+            transition: fill .2s ease, transform .2s ease, filter .2s ease;
+            transform-box: fill-box;
+            transform-origin: center;
+        }
+
+        .map-region:hover,
+        .map-region:focus {
+            filter: drop-shadow(0 5px 5px rgba(15,23,42,.18));
+            transform: translateY(-2px);
+            outline: none;
+        }
+
+        .map-region.active { fill: #dc2626 !important; }
+
+        .map-label {
+            pointer-events: none;
+            font: 700 12px 'Plus Jakarta Sans', sans-serif;
+            fill: #0f172a;
+            text-anchor: middle;
+        }
+
+        .ledger-tools {
+            background: linear-gradient(135deg,#fff,#f8f9fa);
+        }
+
+        .ledger-card { animation: cardIn .35s ease both; }
+
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .visual-divider {
+            height: 5px;
+            width: 100%;
+            background: linear-gradient(90deg,#dc2626 0 18%,#fff 18% 22%,#0f172a 22% 100%);
+        }
+
+        @media (max-width: 640px) {
+            .hero-atmosphere h1 { font-size: clamp(2.5rem, 12vw, 4rem); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto !important; }
+            *, *::before, *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+            }
+            .reveal { opacity: 1; transform: none; }
+        }
+    </style>
+
+    <style id="warm-heritage-palette">
+        :root {
+            --heritage-espresso: #291204;
+            --heritage-brown: #482511;
+            --heritage-cocoa: #683011;
+            --heritage-rust: #9B4824;
+            --heritage-clay: #B96B43;
+            --heritage-cream: #F5EFE5;
+            --heritage-paper: #FFFCF6;
+            --heritage-ink: #302016;
+            --heritage-muted: #8F7968;
+            --heritage-line: #D9C7B5;
+        }
+
+        html { background: var(--heritage-espresso) !important; }
+        body {
+            background: var(--heritage-brown) !important;
+            color: var(--heritage-cream) !important;
+        }
+
+        /* Main surfaces */
+        header {
+            background: rgba(41, 18, 4, .94) !important;
+            border-color: var(--heritage-cocoa) !important;
+            color: var(--heritage-cream) !important;
+        }
+        header .text-darkText, header .text-bodyText { color: var(--heritage-cream) !important; }
+        header .bg-ornamentRed { background: var(--heritage-rust) !important; }
+        section, #philosophy, #timeline, #dialogue, #ledger {
+            background-color: var(--heritage-brown) !important;
+            border-color: var(--heritage-cocoa) !important;
+        }
+        #regions { background: #3B1D0C !important; }
+        #artifacts { background: #3B1D0C !important; border-color: var(--heritage-cocoa) !important; }
+        footer { background: var(--heritage-espresso) !important; }
+
+        /* Hero: atmospheric dark cover */
+        .hero-atmosphere {
+            background:
+                radial-gradient(ellipse at 15% 22%, rgba(185,107,67,.24), transparent 35%),
+                radial-gradient(ellipse at 86% 70%, rgba(0,0,0,.2), transparent 38%),
+                linear-gradient(135deg, #291204 0%, #482511 58%, #3B1D0C 100%) !important;
+        }
+        .hero-atmosphere h1, .hero-atmosphere .text-darkText,
+        .hero-atmosphere .text-bodyText { color: var(--heritage-cream) !important; }
+        .hero-atmosphere .text-mutedText { color: #C9B5A1 !important; }
+        .hero-atmosphere .text-ornamentRed { color: #D18A61 !important; }
+        .hero-atmosphere .bg-white\/80 { background: rgba(255,252,246,.09) !important; }
+        .hero-atmosphere .border-ornamentRed\/20 { border-color: rgba(209,138,97,.35) !important; }
+        .hero-atmosphere .border-darkText\/10 { border-color: rgba(245,239,229,.18) !important; }
+        .hero-atmosphere .hero-stamp { box-shadow: 0 18px 55px rgba(0,0,0,.22) !important; }
+
+        /* Paper-like cards, inspired by the reference */
+        .heavy-card {
+            background: var(--heritage-paper) !important;
+            border: 1px solid var(--heritage-line) !important;
+            color: var(--heritage-ink) !important;
+            box-shadow: 0 8px 22px rgba(20,8,2,.12);
+        }
+        .heavy-card:hover {
+            border-color: var(--heritage-clay) !important;
+            box-shadow: 0 12px 32px rgba(20,8,2,.24) !important;
+        }
+        .heavy-card h1, .heavy-card h2, .heavy-card h3,
+        .heavy-card .text-darkText, .heavy-card .text-bodyText { color: var(--heritage-ink) !important; }
+        .heavy-card .text-mutedText { color: #796452 !important; }
+        .heavy-card .border-cardBorder, .heavy-card .border-gray-200 { border-color: var(--heritage-line) !important; }
+
+        /* Replace the original red / blue / grey accents */
+        .text-ornamentRed, .hover\:text-ornamentRed:hover { color: var(--heritage-rust) !important; }
+        .bg-ornamentRed, .hover\:bg-ornamentRed:hover { background-color: var(--heritage-rust) !important; }
+        .border-ornamentRed, .focus\:border-ornamentRed:focus { border-color: var(--heritage-rust) !important; }
+        .bg-ornamentRedSoft { background-color: #F1E0D3 !important; }
+        .text-cornflowerBlue { color: var(--heritage-cocoa) !important; }
+        .bg-cornflowerBlue { background-color: var(--heritage-cocoa) !important; }
+        .bg-cornflowerSoft { background-color: #EDE1D4 !important; }
+        .text-darkText { color: var(--heritage-ink) !important; }
+        .text-bodyText { color: var(--heritage-ink) !important; }
+        .text-mutedText { color: #C9B5A1 !important; }
+        .bg-darkText { background-color: var(--heritage-espresso) !important; }
+        .border-darkText, .border-cardBorder { border-color: var(--heritage-cocoa) !important; }
+        .bg-softGray { background-color: #EFE5D8 !important; }
+        .bg-white { background-color: var(--heritage-paper) !important; }
+        .border-gray-200, .border-gray-300 { border-color: var(--heritage-line) !important; }
+        .text-gray-200, .text-gray-300 { color: #D9C7B5 !important; }
+
+        /* Timeline and region map */
+        #timelineItems { border-color: #A77A5B !important; }
+        .timeline-filter { border-color: var(--heritage-line) !important; color: var(--heritage-cream) !important; }
+        .timeline-filter.bg-darkText { background: var(--heritage-rust) !important; border-color: var(--heritage-rust) !important; }
+        .timeline-item .bg-white { background: var(--heritage-paper) !important; }
+        .map-region.active { fill: var(--heritage-rust) !important; }
+        .map-label { fill: var(--heritage-ink) !important; }
+        #regions .heavy-card { background: var(--heritage-paper) !important; }
+        .region-button { border-color: var(--heritage-line) !important; color: var(--heritage-ink) !important; }
+        .region-button:hover { background: var(--heritage-espresso) !important; color: var(--heritage-paper) !important; }
+
+        /* Forms and controls */
+        input, textarea, select {
+            background-color: #FFFCF6 !important;
+            color: var(--heritage-ink) !important;
+            border-color: var(--heritage-line) !important;
+        }
+        input:focus, textarea:focus, select:focus { border-color: var(--heritage-rust) !important; }
+        input[type="checkbox"] { accent-color: var(--heritage-rust) !important; }
+        .ledger-tools { background: linear-gradient(135deg, #F5EFE5, #EDE1D4) !important; }
+        .modal-backdrop { background: rgba(24,10,3,.78) !important; }
+        [role="dialog"] > div { background: var(--heritage-paper) !important; color: var(--heritage-ink) !important; border-color: var(--heritage-cocoa) !important; }
+
+        .section-kicker::before { background: var(--heritage-clay) !important; }
+        .visual-divider { background: linear-gradient(90deg, var(--heritage-rust) 0 18%, var(--heritage-cream) 18% 22%, var(--heritage-cocoa) 22% 100%) !important; }
+        ::-webkit-scrollbar-track { background: var(--heritage-espresso) !important; }
+        ::-webkit-scrollbar-thumb { background: var(--heritage-clay) !important; }
+        :focus-visible { outline-color: var(--heritage-clay) !important; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { opacity: 1; transform: none; }
+        }
+    </style>
+
+</head>
+
+<body class="grid-bg ornament-pattern antialiased selection:bg-ornamentRedSoft selection:text-ornamentRed">
+
+    <div id="progressBar" class="fixed top-0 left-0 h-[3px] bg-ornamentRed z-50 transition-all duration-150 w-0"></div>
+
+    <header class="fixed top-0 left-0 w-full z-40 bg-white/90 backdrop-blur-md border-b-2 border-cardBorder transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+            <a href="#hero" class="flex items-center gap-3 group">
+                <div class="w-9 h-9 bg-ornamentRed text-white flex items-center justify-center font-bold text-sm rounded transition-transform group-hover:scale-105">❖</div>
+                <div class="flex flex-col">
+                    <span class="text-base font-extrabold tracking-tight uppercase text-darkText leading-none">СВЯЗЬ ПОКОЛЕНИЙ</span>
+                    <span class="text-[10px] font-bold text-ornamentRed tracking-widest uppercase mt-1">Республика Беларусь</span>
+                </div>
+            </a>
+
+            <nav class="hidden lg:flex items-center gap-6 text-xs font-bold tracking-wider uppercase text-bodyText">
+                <a href="#philosophy" class="hover:text-ornamentRed">Ценности</a>
+                <a href="#timeline" class="hover:text-ornamentRed">Хроника</a>
+                <a href="#regions" class="hover:text-ornamentRed">Регионы</a>
+                <a href="#dialogue" class="hover:text-ornamentRed">Диалоги</a>
+                <a href="#artifacts" class="hover:text-ornamentRed">Артефакты</a>
+                <a href="#ledger" class="hover:text-ornamentRed">Книга посланий</a>
+            </nav>
+
+            <a href="#ledger" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 bg-darkText text-white text-xs font-extrabold uppercase tracking-widest rounded hover:bg-ornamentRed transition-all">
+                <span>Оставить запись</span>
+                <i class="fa-solid fa-pen-nib text-[10px]"></i>
+            </a>
+        </div>
+    </header>
+
+    <section id="hero" class="hero-atmosphere relative min-h-screen flex items-center justify-center pt-28 pb-16 px-6 overflow-hidden">
+        <canvas id="heroCanvas" class="absolute inset-0 w-full h-full pointer-events-none z-0"></canvas>
+        <div class="absolute right-[-7rem] top-28 w-72 h-72 md:w-[30rem] md:h-[30rem] rounded-full border border-ornamentRed/20 pointer-events-none"></div>
+        <div class="absolute right-[-4rem] top-40 w-56 h-56 md:w-[24rem] md:h-[24rem] rounded-full border border-darkText/10 pointer-events-none"></div>
+
+        <div class="max-w-5xl mx-auto text-center relative z-10 space-y-8 my-auto">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/80 border border-ornamentRed/20 text-ornamentRed text-xs font-extrabold tracking-widest uppercase rounded-full hero-stamp">
+                <i class="fa-solid fa-certificate"></i>
+                <span>Национальное единство • Преемственность • Прогресс</span>
+            </div>
+
+            <div class="text-[10px] sm:text-xs font-extrabold tracking-[.35em] uppercase text-mutedText">Беларусь · Память · Люди · Время</div>
+
+            <h1 class="text-5xl sm:text-7xl md:text-8xl font-serif-bold tracking-tight text-darkText leading-[1.05]">
+                Памяць. Наследие.<br>
+                <span class="text-ornamentRed italic font-normal">Созидание.</span>
+            </h1>
+
+            <p class="max-w-xl mx-auto text-xs sm:text-sm text-mutedText leading-relaxed">История страны складывается из судеб, мест и историй, которые мы передаём дальше.</p>
+
+            <div class="flex items-center justify-center gap-3">
+                <span class="w-10 h-px bg-ornamentRed"></span>
+                <span class="w-3 h-3 rotate-45 border-2 border-ornamentRed"></span>
+                <span class="w-10 h-px bg-darkText"></span>
+            </div>
+
+            <p class="text-base sm:text-xl text-bodyText max-w-3xl mx-auto font-semibold leading-relaxed">
+                Живой мост между мудростью веков, великим подвигом предков и устремлённым в будущее молодым поколением Республики Беларусь.
+            </p>
+
+            <div class="pt-10 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                <div class="heavy-card hero-stamp p-5 rounded-xl text-center">
+                    <div class="text-3xl sm:text-4xl font-extrabold text-darkText font-mono">80+</div>
+                    <div class="text-[11px] font-extrabold uppercase tracking-wider text-mutedText mt-1">Лет мирного неба</div>
+                </div>
+                <div class="heavy-card hero-stamp p-5 rounded-xl text-center">
+                    <div class="text-3xl sm:text-4xl font-extrabold text-ornamentRed font-mono">6</div>
+                    <div class="text-[11px] font-extrabold uppercase tracking-wider text-mutedText mt-1">Областей единства</div>
+                </div>
+                <div class="heavy-card hero-stamp p-5 rounded-xl text-center">
+                    <div class="text-3xl sm:text-4xl font-extrabold text-darkText font-mono">1000+</div>
+                    <div class="text-[11px] font-extrabold uppercase tracking-wider text-mutedText mt-1">Памятников истории</div>
+                </div>
+                <div class="heavy-card hero-stamp p-5 rounded-xl text-center">
+                    <div class="text-3xl sm:text-4xl font-extrabold text-cornflowerBlue font-mono">100%</div>
+                    <div class="text-[11px] font-extrabold uppercase tracking-wider text-mutedText mt-1">Преемственность</div>
+                </div>
+            </div>
+
+            <div class="pt-6">
+                <a href="#philosophy" class="inline-flex items-center gap-3 text-xs font-extrabold uppercase tracking-widest text-darkText hover:text-ornamentRed transition-all group">
+                    <span>Исследовать ценности</span>
+                    <i class="fa-solid fa-arrow-down transition-transform group-hover:translate-y-1"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="philosophy" class="py-28 px-6 max-w-7xl mx-auto border-t-2 border-cardBorder">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 reveal">
+            <div>
+                <span class="section-kicker text-xs uppercase font-extrabold tracking-widest text-ornamentRed">Фундамент государственности</span>
+                <h2 class="text-4xl sm:text-5xl font-serif-bold text-darkText mt-2">Духовные опоры Беларуси</h2>
+            </div>
+            <p class="text-bodyText text-sm font-semibold max-w-md leading-relaxed">Четыре ключевых элемента, обеспечивающих непрерывность развития и сохранение национальной идентичности.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <article class="heavy-card p-8 rounded-xl reveal flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded bg-ornamentRedSoft text-ornamentRed flex items-center justify-center text-xl font-bold mb-6"><i class="fa-solid fa-house-chimney"></i></div>
+                    <span class="text-[10px] font-extrabold font-mono text-ornamentRed uppercase tracking-widest">01 / Традиции</span>
+                    <h3 class="text-2xl font-serif-bold text-darkText mt-2 mb-3">Семейный очаг</h3>
+                    <p class="text-xs text-bodyText font-semibold leading-relaxed">Семья — хранитель культурного кода, традиций, уважения к старшим и связи поколений.</p>
+                </div>
+                <button onclick="openModal('modal1')" class="mt-6 text-xs font-extrabold uppercase tracking-wider text-darkText hover:text-ornamentRed flex items-center gap-2 pt-4 border-t border-cardBorder">Подробнее <i class="fa-solid fa-chevron-right"></i></button>
+            </article>
+
+            <article class="heavy-card p-8 rounded-xl reveal flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded bg-softGray text-darkText flex items-center justify-center text-xl font-bold mb-6"><i class="fa-solid fa-shield-halved"></i></div>
+                    <span class="text-[10px] font-extrabold font-mono text-darkText uppercase tracking-widest">02 / Память</span>
+                    <h3 class="text-2xl font-serif-bold text-darkText mt-2 mb-3">Подвиг народа</h3>
+                    <p class="text-xs text-bodyText font-semibold leading-relaxed">Память о войне, мужестве защитников и людях, чьи судьбы стали частью истории страны.</p>
+                </div>
+                <button onclick="openModal('modal2')" class="mt-6 text-xs font-extrabold uppercase tracking-wider text-darkText hover:text-ornamentRed flex items-center gap-2 pt-4 border-t border-cardBorder">Подробнее <i class="fa-solid fa-chevron-right"></i></button>
+            </article>
+
+            <article class="heavy-card p-8 rounded-xl reveal flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded bg-cornflowerSoft text-cornflowerBlue flex items-center justify-center text-xl font-bold mb-6"><i class="fa-solid fa-book-open"></i></div>
+                    <span class="text-[10px] font-extrabold font-mono text-cornflowerBlue uppercase tracking-widest">03 / Культура</span>
+                    <h3 class="text-2xl font-serif-bold text-darkText mt-2 mb-3">Культурный код</h3>
+                    <p class="text-xs text-bodyText font-semibold leading-relaxed">Белорусский язык, литература, фольклор, народные промыслы и самобытное искусство.</p>
+                </div>
+                <button onclick="openModal('modal3')" class="mt-6 text-xs font-extrabold uppercase tracking-wider text-darkText hover:text-ornamentRed flex items-center gap-2 pt-4 border-t border-cardBorder">Подробнее <i class="fa-solid fa-chevron-right"></i></button>
+            </article>
+
+            <article class="heavy-card p-8 rounded-xl reveal flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded bg-ornamentRedSoft text-ornamentRed flex items-center justify-center text-xl font-bold mb-6"><i class="fa-solid fa-rocket"></i></div>
+                    <span class="text-[10px] font-extrabold font-mono text-ornamentRed uppercase tracking-widest">04 / Будущее</span>
+                    <h3 class="text-2xl font-serif-bold text-darkText mt-2 mb-3">Инновации молодёжи</h3>
+                    <p class="text-xs text-bodyText font-semibold leading-relaxed">Наука, образование, технологии и возможности для раскрытия потенциала молодых людей.</p>
+                </div>
+                <button onclick="openModal('modal4')" class="mt-6 text-xs font-extrabold uppercase tracking-wider text-darkText hover:text-ornamentRed flex items-center gap-2 pt-4 border-t border-cardBorder">Подробнее <i class="fa-solid fa-chevron-right"></i></button>
+            </article>
+        </div>
+    </section>
+
+    <div id="modal1" class="fixed inset-0 modal-backdrop z-50 hidden flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal1title">
+        <div class="bg-white border-2 border-darkText max-w-xl w-full p-8 rounded-xl shadow-2xl relative space-y-4">
+            <button onclick="closeModal('modal1')" class="absolute top-4 right-4 w-8 h-8 border rounded" aria-label="Закрыть">✕</button>
+            <span class="text-xs font-mono font-extrabold text-ornamentRed uppercase">Традиции</span>
+            <h3 id="modal1title" class="text-3xl font-serif-bold">Семейный очаг и традиции</h3>
+            <p class="text-sm leading-relaxed">Преемственность поколений начинается в семье: в историях, семейных обычаях, уважении, заботе и воспоминаниях, которыми делятся близкие.</p>
+        </div>
+    </div>
+
+    <div id="modal2" class="fixed inset-0 modal-backdrop z-50 hidden flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal2title">
+        <div class="bg-white border-2 border-darkText max-w-xl w-full p-8 rounded-xl shadow-2xl relative space-y-4">
+            <button onclick="closeModal('modal2')" class="absolute top-4 right-4 w-8 h-8 border rounded" aria-label="Закрыть">✕</button>
+            <span class="text-xs font-mono font-extrabold text-ornamentRed uppercase">Память</span>
+            <h3 id="modal2title" class="text-3xl font-serif-bold">Историческая память</h3>
+            <p class="text-sm leading-relaxed">Мемориалы, документы и личные свидетельства помогают сохранять память о людях и событиях прошлого и передавать её следующим поколениям.</p>
+        </div>
+    </div>
+
+    <div id="modal3" class="fixed inset-0 modal-backdrop z-50 hidden flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal3title">
+        <div class="bg-white border-2 border-darkText max-w-xl w-full p-8 rounded-xl shadow-2xl relative space-y-4">
+            <button onclick="closeModal('modal3')" class="absolute top-4 right-4 w-8 h-8 border rounded" aria-label="Закрыть">✕</button>
+            <span class="text-xs font-mono font-extrabold text-ornamentRed uppercase">Культура</span>
+            <h3 id="modal3title" class="text-3xl font-serif-bold">Культурный код</h3>
+            <p class="text-sm leading-relaxed">Язык, музыка, литература, ремёсла и семейные истории сохраняют культурную память и помогают людям чувствовать связь с родным краем.</p>
+        </div>
+    </div>
+
+    <div id="modal4" class="fixed inset-0 modal-backdrop z-50 hidden flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal4title">
+        <div class="bg-white border-2 border-darkText max-w-xl w-full p-8 rounded-xl shadow-2xl relative space-y-4">
+            <button onclick="closeModal('modal4')" class="absolute top-4 right-4 w-8 h-8 border rounded" aria-label="Закрыть">✕</button>
+            <span class="text-xs font-mono font-extrabold text-ornamentRed uppercase">Будущее</span>
+            <h3 id="modal4title" class="text-3xl font-serif-bold">Будущее начинается сегодня</h3>
+            <p class="text-sm leading-relaxed">Новые поколения продолжают историю через образование, творчество, исследования, заботу о людях и сохранение культурного наследия.</p>
+        </div>
+    </div>
+
+        <section id="timeline" class="py-24 px-6 max-w-7xl mx-auto border-t-2 border-cardBorder">
+        <div class="max-w-3xl mb-12 reveal">
+            <span class="section-kicker text-xs uppercase font-extrabold tracking-widest text-ornamentRed">Время и события</span>
+            <h2 class="text-4xl sm:text-6xl font-serif-bold mt-3">Историческая хроника</h2>
+            <p class="mt-4 text-sm leading-relaxed text-mutedText">Путешествие по ключевым событиям истории белорусских земель. Выбери период, чтобы сосредоточиться на интересующей эпохе.</p>
+        </div>
+
+        <div class="flex flex-wrap gap-3 mb-12" id="timelineFilters">
+            <button class="timeline-filter px-4 py-2 border-2 border-darkText bg-darkText text-white rounded-full text-xs font-bold" data-filter="all">Все события</button>
+            <button class="timeline-filter px-4 py-2 border-2 border-gray-200 rounded-full text-xs font-bold" data-filter="ancient">Древность и Средневековье</button>
+            <button class="timeline-filter px-4 py-2 border-2 border-gray-200 rounded-full text-xs font-bold" data-filter="culture">Культура и просвещение</button>
+            <button class="timeline-filter px-4 py-2 border-2 border-gray-200 rounded-full text-xs font-bold" data-filter="war">Военная история</button>
+            <button class="timeline-filter px-4 py-2 border-2 border-gray-200 rounded-full text-xs font-bold" data-filter="modern">Новейшее время</button>
+        </div>
+
+        <div class="relative border-l-2 border-gray-200 ml-3 md:ml-40 space-y-8" id="timelineItems">
+            <article class="timeline-item relative pl-8 md:pl-12 reveal" data-cat="ancient">
+                <span class="absolute -left-[9px] top-2 w-4 h-4 rounded-full bg-ornamentRed border-4 border-white ring-1 ring-gray-200"></span>
+                <span class="hidden md:block absolute -left-36 top-1 text-xs font-mono font-extrabold">IX–X вв.</span>
+                <div class="heavy-card p-7 sm:p-9 rounded-xl">
+                    <span class="text-[10px] font-extrabold uppercase text-ornamentRed md:hidden">IX–X века</span>
+                    <h3 class="text-2xl sm:text-3xl font-serif-bold mt-1">Полоцкая земля</h3>
+                    <p class="text-sm leading-relaxed mt-3">Полоцк стал одним из важных политических и культурных центров восточнославянского мира. История Полоцкой земли помогает изучать ранние этапы развития региона.</p>
+                    <div class="mt-5 pt-4 border-t border-gray-200 flex items-center justify-between text-xs font-bold text-mutedText">
+                        <span><i class="fa-solid fa-location-dot mr-2 text-ornamentRed"></i>Полоцк</span>
+                        <span>Средневековье</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="timeline-item relative pl-8 md:pl-12 reveal" data-cat="culture">
+                <span class="absolute -left-[9px] top-2 w-4 h-4 rounded-full bg-ornamentRed border-4 border-white ring-1 ring-gray-200"></span>
+                <span class="hidden md:block absolute -left-36 top-1 text-xs font-mono font-extrabold">XII век</span>
+                <div class="heavy-card p-7 sm:p-9 rounded-xl">
+                    <span class="text-[10px] font-extrabold uppercase text-ornamentRed md:hidden">XII век</span>
+                    <h3 class="text-2xl sm:text-3xl font-serif-bold mt-1">Ефросинья Полоцкая</h3>
+                    <p class="text-sm leading-relaxed mt-3">Ефросинья Полоцкая известна как просветительница и духовная деятельница. Её имя связано с развитием книжной культуры и духовного наследия Полоцка.</p>
+                    <div class="mt-5 pt-4 border-t border-gray-200 flex items-center justify-between text-xs font-bold text-mutedText">
+                        <span><i class="fa-solid fa-book-open mr-2 text-ornamentRed"></i>Просвещение</span>
+                        <span>Культура</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="timeline-item relative pl-8 md:pl-12 reveal" data-cat="culture">
+                <span class="absolute -left-[9px] top-2 w-4 h-4 rounded-full bg-ornamentRed border-4 border-white ring-1 ring-gray-200"></span>
+                <span class="hidden md:block absolute -left-36 top-1 text-xs font-mono font-extrabold">1517–1519</span>
+                <div class="heavy-card p-7 sm:p-9 rounded-xl">
+                    <span class="text-[10px] font-extrabold uppercase text-ornamentRed md:hidden">1517–1519 годы</span>
+                    <h3 class="text-2xl sm:text-3xl font-serif-bold mt-1">Франциск Скорина и печатное слово</h3>
+                    <p class="text-sm leading-relaxed mt-3">В Праге Франциск Скорина издал книги библейской серии. Его деятельность стала важной страницей в истории книгопечатания и просвещения на восточнославянских землях.</p>
+                    <div class="mt-5 pt-4 border-t border-gray-200 flex items-center justify-between text-xs font-bold text-mutedText">
+                        <span><i class="fa-solid fa-book mr-2 text-ornamentRed"></i>Книгопечатание</span>
+                        <span>Просвещение</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="timeline-item relative pl-8 md:pl-12 reveal" data-cat="modern">
+                <span class="absolute -left-[9px] top-2 w-4 h-4 rounded-full bg-darkText border-4 border-white ring-1 ring-gray-200"></span>
+                <span class="hidden md:block absolute -left-36 top-1 text-xs font-mono font-extrabold">1918</span>
+                <div class="heavy-card p-7 sm:p-9 rounded-xl">
+                    <span class="text-[10px] font-extrabold uppercase text-ornamentRed md:hidden">1918 год</span>
+                    <h3 class="text-2xl sm:text-3xl font-serif-bold mt-1">Провозглашение БНР</h3>
+                    <p class="text-sm leading-relaxed mt-3">25 марта 1918 года была провозглашена Белорусская Народная Республика. Эта дата занимает заметное место в истории белорусского национального движения.</p>
+                    <div class="mt-5 pt-4 border-t border-gray-200 flex items-center justify-between text-xs font-bold text-mutedText">
+                        <span><i class="fa-solid fa-flag mr-2 text-ornamentRed"></i>Национальное движение</span>
+                        <span>XX век</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="timeline-item relative pl-8 md:pl-12 reveal" data-cat="war">
+                <span class="absolute -left-[9px] top-2 w-4 h-4 rounded-full bg-ornamentRed border-4 border-white ring-1 ring-gray-200"></span>
+                <span class="hidden md:block absolute -left-36 top-1 text-xs font-mono font-extrabold">1941–1945</span>
+                <div class="heavy-card p-7 sm:p-9 rounded-xl border-l-8 border-l-ornamentRed">
+                    <span class="text-[10px] font-extrabold uppercase text-ornamentRed md:hidden">1941–1945 годы</span>
+                    <h3 class="text-2xl sm:text-3xl font-serif-bold mt-1">Великая Отечественная война</h3>
+                    <p class="text-sm leading-relaxed mt-3">Война принесла Беларуси огромные человеческие потери и разрушения. Брестская крепость, Хатынь и многочисленные мемориалы напоминают о трагедии мирного населения, сопротивлении и цене мира.</p>
+                    <div class="mt-5 pt-4 border-t border-gray-200 flex items-center justify-between text-xs font-bold text-mutedText">
+                        <span><i class="fa-solid fa-dove mr-2 text-ornamentRed"></i>Память о погибших</span>
+                        <span>Военная история</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="timeline-item relative pl-8 md:pl-12 reveal" data-cat="modern">
+                <span class="absolute -left-[9px] top-2 w-4 h-4 rounded-full bg-darkText border-4 border-white ring-1 ring-gray-200"></span>
+                <span class="hidden md:block absolute -left-36 top-1 text-xs font-mono font-extrabold">1991</span>
+                <div class="heavy-card p-7 sm:p-9 rounded-xl">
+                    <span class="text-[10px] font-extrabold uppercase text-ornamentRed md:hidden">1991 год</span>
+                    <h3 class="text-2xl sm:text-3xl font-serif-bold mt-1">Независимость Республики Беларусь</h3>
+                    <p class="text-sm leading-relaxed mt-3">В 1991 году Беларусь стала независимым государством. Начался новый этап формирования государственных институтов и международных отношений.</p>
+                    <div class="mt-5 pt-4 border-t border-gray-200 flex items-center justify-between text-xs font-bold text-mutedText">
+                        <span><i class="fa-solid fa-compass mr-2 text-ornamentRed"></i>Современная государственность</span>
+                        <span>Новейшее время</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="timeline-item relative pl-8 md:pl-12 reveal" data-cat="modern">
+                <span class="absolute -left-[9px] top-2 w-4 h-4 rounded-full bg-ornamentRed border-4 border-white ring-1 ring-gray-200"></span>
+                <span class="hidden md:block absolute -left-36 top-1 text-xs font-mono font-extrabold">2024</span>
+                <div class="heavy-card p-7 sm:p-9 rounded-xl">
+                    <span class="text-[10px] font-extrabold uppercase text-ornamentRed md:hidden">2024 год</span>
+                    <h3 class="text-2xl sm:text-3xl font-serif-bold mt-1">Беларусь в XXI веке</h3>
+                    <p class="text-sm leading-relaxed mt-3">Современная история включает развитие образования, промышленности, культуры, цифровых технологий и участие белорусских специалистов в международных проектах.</p>
+                    <div class="mt-5 pt-4 border-t border-gray-200 flex items-center justify-between text-xs font-bold text-mutedText">
+                        <span><i class="fa-solid fa-lightbulb mr-2 text-ornamentRed"></i>Наука и технологии</span>
+                        <span>XXI век</span>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <p class="text-xs text-mutedText mt-8 max-w-3xl">Примечание: хроника носит обзорный характер. Для учебной или музейной публикации даты и формулировки стоит сверить с историческими источниками и дополнить ссылками на них.</p>
+    </section>
+
+    <section id="regions" class="py-24 px-6 border-t-2 border-cardBorder bg-white/70">
+        <div class="max-w-7xl mx-auto">
+            <div class="max-w-3xl mb-12 reveal">
+                <span class="section-kicker text-xs uppercase font-extrabold tracking-widest text-ornamentRed">Карта наследия</span>
+                <h2 class="text-4xl sm:text-6xl font-serif-bold mt-3">Беларусь — мозаика регионов</h2>
+                <p class="text-sm text-mutedText mt-4 leading-relaxed">Выбери область на схематичной карте, чтобы познакомиться с её культурными и историческими особенностями.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-10 items-center">
+                <div class="heavy-card rounded-2xl p-4 sm:p-8">
+                    <svg viewBox="0 0 600 390" role="img" aria-label="Схематичная интерактивная карта областей Беларуси" class="w-full h-auto">
+                        <defs>
+                            <pattern id="mapTexture" width="12" height="12" patternUnits="userSpaceOnUse">
+                                <path d="M0 12 L12 0" stroke="#ffffff" stroke-width="1" opacity=".5"/>
+                            </pattern>
+                        </defs>
+
+                        <path d="M72 110 L115 75 L170 82 L201 57 L245 76 L285 56 L326 75 L371 68 L404 89 L451 80 L492 108 L526 134 L515 166 L539 193 L514 218 L485 220 L466 251 L426 265 L395 300 L354 291 L326 319 L290 307 L251 322 L220 293 L182 300 L162 273 L124 269 L110 236 L81 222 L90 190 L65 166 Z" fill="#f8f9fa" stroke="#0f172a" stroke-width="3" stroke-linejoin="round"/>
+
+                        <g class="map-region" data-region="brest" tabindex="0" role="button" aria-label="Брестская область">
+                            <path d="M72 110 L115 75 L170 82 L201 57 L245 76 L230 133 L195 160 L157 166 L125 150 L91 153 L65 166 L72 110 Z" fill="#fca5a5" stroke="#fff" stroke-width="3"/>
+                            <text x="145" y="125" class="map-label">Брестская</text>
+                        </g>
+
+                        <g class="map-region" data-region="minsk" tabindex="0" role="button" aria-label="Минская область">
+                            <path d="M245 76 L285 56 L326 75 L371 68 L404 89 L395 135 L354 154 L326 180 L290 159 L253 170 L230 133 Z" fill="#d1d5db" stroke="#fff" stroke-width="3"/>
+                            <text x="319" y="119" class="map-label">Минская</text>
+                        </g>
+
+                        <g class="map-region" data-region="vitebsk" tabindex="0" role="button" aria-label="Витебская область">
+                            <path d="M371 68 L404 89 L451 80 L492 108 L526 134 L515 166 L472 171 L438 151 L395 135 L404 89 Z" fill="#fecaca" stroke="#fff" stroke-width="3"/>
+                            <text x="444" y="119" class="map-label">Витебская</text>
+                        </g>
+
+                        <g class="map-region" data-region="gomel" tabindex="0" role="button" aria-label="Гомельская область">
+                            <path d="M354 154 L395 135 L438 151 L472 171 L485 220 L466 251 L426 265 L395 300 L354 291 L326 250 L326 180 Z" fill="#e5e7eb" stroke="#fff" stroke-width="3"/>
+                            <text x="407" y="222" class="map-label">Гомельская</text>
+                        </g>
+
+                        <g class="map-region" data-region="mogilev" tabindex="0" role="button" aria-label="Могилёвская область">
+                            <path d="M395 135 L438 151 L472 171 L485 220 L426 205 L395 225 L354 206 L354 154 Z" fill="#fca5a5" stroke="#fff" stroke-width="3"/>
+                            <text x="414" y="180" class="map-label">Могилёвская</text>
+                        </g>
+
+                        <g class="map-region" data-region="grodno" tabindex="0" role="button" aria-label="Гродненская область">
+                            <path d="M65 166 L91 153 L125 150 L157 166 L195 160 L230 133 L253 170 L251 212 L220 240 L182 240 L162 273 L124 269 L110 236 L81 222 L90 190 Z" fill="#fecaca" stroke="#fff" stroke-width="3"/>
+                            <text x="158" y="207" class="map-label">Гродненская</text>
+                        </g>
+
+                        <path d="M253 170 L290 159 L326 180 L326 250 L290 270 L251 270 L220 240 L251 212 Z" fill="#d1d5db" stroke="#fff" stroke-width="3"/>
+                        <text x="276" y="223" class="map-label">Минск</text>
+                    </svg>
+                    <div class="flex flex-wrap gap-3 justify-center mt-4 text-xs text-mutedText">
+                        <span><i class="fa-solid fa-circle text-red-300 mr-1"></i>Западные регионы</span>
+                        <span><i class="fa-solid fa-circle text-gray-300 mr-1"></i>Центральные регионы</span>
+                        <span><i class="fa-solid fa-hand-pointer text-ornamentRed mr-1"></i>Нажми на область</span>
+                    </div>
+                    <p class="text-[11px] text-mutedText text-center mt-3">Это иллюстративная схема, не точная географическая карта и не официальный административный контур.</p>
+                </div>
+
+                <div class="heavy-card rounded-2xl p-8 sm:p-10 reveal" aria-live="polite">
+                    <span class="text-xs uppercase font-extrabold tracking-widest text-ornamentRed">Выбранный регион</span>
+                    <h3 id="regionTitle" class="text-3xl sm:text-4xl font-serif-bold mt-3">Минская область</h3>
+                    <p id="regionDescription" class="text-sm leading-relaxed mt-4">Центральный регион страны, в котором расположена столица. Здесь соседствуют исторические усадьбы, памятники разных эпох и современные культурные пространства.</p>
+                    <div class="mt-7 pt-6 border-t border-gray-200">
+                        <span class="text-xs uppercase font-extrabold tracking-widest text-mutedText">Что изучить</span>
+                        <p id="regionPlaces" class="text-sm font-semibold mt-2">Несвижский дворцово-парковый комплекс, Заславль, исторические места Минска.</p>
+                    </div>
+                    <div class="mt-7 flex flex-wrap gap-2">
+                        <button class="region-button px-4 py-2 border rounded-full text-xs font-bold hover:bg-darkText hover:text-white" data-region="brest">Брестская</button>
+                        <button class="region-button px-4 py-2 border rounded-full text-xs font-bold hover:bg-darkText hover:text-white" data-region="vitebsk">Витебская</button>
+                        <button class="region-button px-4 py-2 border rounded-full text-xs font-bold hover:bg-darkText hover:text-white" data-region="gomel">Гомельская</button>
+                        <button class="region-button px-4 py-2 border rounded-full text-xs font-bold hover:bg-darkText hover:text-white" data-region="grodno">Гродненская</button>
+                        <button class="region-button px-4 py-2 border rounded-full text-xs font-bold hover:bg-darkText hover:text-white" data-region="minsk">Минская</button>
+                        <button class="region-button px-4 py-2 border rounded-full text-xs font-bold hover:bg-darkText hover:text-white" data-region="mogilev">Могилёвская</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+        <section id="dialogue" class="py-24 px-6 max-w-7xl mx-auto border-t-2 border-cardBorder">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div class="reveal">
+                <span class="section-kicker text-xs uppercase font-extrabold tracking-widest text-ornamentRed">Живые истории</span>
+                <h2 class="text-4xl sm:text-6xl font-serif-bold mt-3">Диалог поколений</h2>
+                <p class="text-sm leading-relaxed mt-5 text-mutedText">У каждого поколения свой опыт, но вопросы, которые нас объединяют, остаются удивительно похожими: семья, память, дом, мечты и будущее.</p>
+
+                <div class="mt-8 space-y-4">
+                    <div class="heavy-card rounded-xl p-6">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 rounded-full bg-ornamentRedSoft text-ornamentRed flex items-center justify-center"><i class="fa-solid fa-person-cane"></i></div>
+                            <div>
+                                <h3 class="font-extrabold">Старшее поколение</h3>
+                                <p class="text-xs text-mutedText">Опыт, память, семейные истории</p>
+                            </div>
+                        </div>
+                        <p class="text-sm leading-relaxed italic">«Что из того, чему научила тебя жизнь, ты хотел бы передать молодым?»</p>
+                    </div>
+
+                    <div class="heavy-card rounded-xl p-6">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 rounded-full bg-gray-100 text-darkText flex items-center justify-center"><i class="fa-solid fa-people-group"></i></div>
+                            <div>
+                                <h3 class="font-extrabold">Молодое поколение</h3>
+                                <p class="text-xs text-mutedText">Идеи, открытия, взгляд вперёд</p>
+                            </div>
+                        </div>
+                        <p class="text-sm leading-relaxed italic">«Какое будущее мы можем создать вместе и что для этого важно сохранить?»</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative reveal">
+                <div class="absolute -inset-4 bg-ornamentRed/5 rounded-3xl rotate-2"></div>
+                <div class="relative bg-darkText text-white rounded-2xl p-8 sm:p-12 overflow-hidden">
+                    <div class="absolute -right-10 -top-10 text-white/5 text-9xl"><i class="fa-solid fa-quote-right"></i></div>
+                    <span class="text-xs uppercase tracking-[.25em] text-red-300 font-extrabold">Вопрос для разговора</span>
+                    <h3 class="text-3xl sm:text-4xl font-serif-bold mt-6">Какую семейную историю нельзя забыть?</h3>
+                    <p class="text-sm text-white/70 mt-5 leading-relaxed">Расспроси родителей, бабушек и дедушек о месте, которое они помнят с детства, о важном семейном событии или о вещи, которая передавалась из поколения в поколение.</p>
+                    <button id="newQuestionButton" class="mt-8 inline-flex items-center gap-3 bg-white text-darkText px-5 py-3 rounded-lg text-xs font-extrabold uppercase tracking-wider hover:bg-red-100 transition">
+                        <i class="fa-solid fa-shuffle"></i> Другой вопрос
+                    </button>
+                    <p id="familyQuestion" class="mt-5 text-sm text-red-100" aria-live="polite"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="artifacts" class="py-24 px-6 bg-softGray border-y-2 border-cardBorder">
+        <div class="max-w-7xl mx-auto">
+            <div class="max-w-3xl mb-12 reveal">
+                <span class="section-kicker text-xs uppercase font-extrabold tracking-widest text-ornamentRed">Вещи, которые рассказывают</span>
+                <h2 class="text-4xl sm:text-6xl font-serif-bold mt-3">Артефакты памяти</h2>
+                <p class="text-sm text-mutedText mt-4 leading-relaxed">Предметы, фотографии и документы помогают увидеть большую историю через личные детали.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <article class="heavy-card rounded-2xl p-7 reveal">
+                    <div class="aspect-[4/3] rounded-xl bg-gradient-to-br from-red-100 via-white to-gray-200 flex items-center justify-center text-7xl text-ornamentRed">
+                        <i class="fa-solid fa-camera-retro"></i>
+                    </div>
+                    <span class="text-[10px] uppercase tracking-widest font-extrabold text-ornamentRed block mt-6">Семейный архив</span>
+                    <h3 class="text-2xl font-serif-bold mt-2">Старая фотография</h3>
+                    <p class="text-sm text-mutedText leading-relaxed mt-3">На обороте могут сохраниться дата, подпись, имя или место, которые помогут восстановить семейную историю.</p>
+                </article>
+
+                <article class="heavy-card rounded-2xl p-7 reveal">
+                    <div class="aspect-[4/3] rounded-xl bg-gradient-to-br from-gray-200 via-white to-red-100 flex items-center justify-center text-7xl text-darkText">
+                        <i class="fa-solid fa-book"></i>
+                    </div>
+                    <span class="text-[10px] uppercase tracking-widest font-extrabold text-ornamentRed block mt-6">Знания и память</span>
+                    <h3 class="text-2xl font-serif-bold mt-2">Книга с историей</h3>
+                    <p class="text-sm text-mutedText leading-relaxed mt-3">Дарственные надписи и пометки на полях иногда рассказывают о владельце не меньше, чем сам текст.</p>
+                </article>
+
+                <article class="heavy-card rounded-2xl p-7 reveal">
+                    <div class="aspect-[4/3] rounded-xl bg-gradient-to-br from-red-100 via-white to-gray-200 flex items-center justify-center text-7xl text-ornamentRed">
+                        <i class="fa-solid fa-medal"></i>
+                    </div>
+                    <span class="text-[10px] uppercase tracking-widest font-extrabold text-ornamentRed block mt-6">Личная история</span>
+                    <h3 class="text-2xl font-serif-bold mt-2">Памятная вещь</h3>
+                    <p class="text-sm text-mutedText leading-relaxed mt-3">Награда, письмо или предмет ручной работы может стать отправной точкой для разговора о судьбе человека.</p>
+                </article>
+            </div>
+
+            <div class="mt-8 p-6 sm:p-8 bg-white border-2 border-dashed border-gray-300 rounded-2xl reveal">
+                <div class="flex flex-col md:flex-row gap-5 md:items-center">
+                    <div class="text-3xl text-ornamentRed"><i class="fa-solid fa-box-archive"></i></div>
+                    <div class="flex-1">
+                        <h3 class="text-xl font-serif-bold">Сохрани свою историю</h3>
+                        <p class="text-sm text-mutedText mt-2">Запиши, какой предмет хранится в твоей семье и почему он важен. Не публикуй личные данные других людей без их согласия.</p>
+                    </div>
+                    <a href="#ledger" class="inline-flex justify-center items-center gap-2 px-5 py-3 bg-darkText text-white rounded-lg text-xs font-extrabold uppercase tracking-wider hover:bg-ornamentRed">Добавить послание <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="ledger" class="py-24 px-6 max-w-7xl mx-auto border-t-2 border-cardBorder">
+        <div class="max-w-3xl mb-12 reveal">
+            <span class="section-kicker text-xs uppercase font-extrabold tracking-widest text-ornamentRed">Голоса людей</span>
+            <h2 class="text-4xl sm:text-6xl font-serif-bold mt-3">Книга посланий</h2>
+            <p class="text-sm text-mutedText mt-4 leading-relaxed">Оставь мысль о родной стране, семейной памяти или будущем, которое хочется создать. Записи сохраняются в браузере на этом устройстве.</p>
+        </div>
+
+        <div class="grid lg:grid-cols-[.8fr_1.2fr] gap-10 items-start">
+            <form id="ledgerForm" class="heavy-card rounded-2xl p-6 sm:p-8 ledger-tools reveal">
+                <h3 class="text-2xl font-serif-bold">Оставить послание</h3>
+                <p class="text-xs text-mutedText mt-2 mb-6">Пожалуйста, не указывай адрес, телефон и другие личные данные.</p>
+
+                <label for="authorName" class="block text-xs font-extrabold uppercase tracking-wider mb-2">Как к тебе обращаться?</label>
+                <input id="authorName" name="author" type="text" maxlength="50" required placeholder="Имя или псевдоним" class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 text-sm bg-white focus:border-ornamentRed outline-none">
+
+                <label for="messageCategory" class="block text-xs font-extrabold uppercase tracking-wider mt-5 mb-2">Тема послания</label>
+                <select id="messageCategory" name="category" class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 text-sm bg-white focus:border-ornamentRed outline-none">
+                    <option value="Семья и традиции">Семья и традиции</option>
+                    <option value="Историческая память">Историческая память</option>
+                    <option value="Культура">Культура</option>
+                    <option value="Будущее">Будущее</option>
+                    <option value="Моё послание">Моё послание</option>
+                </select>
+
+                <label for="messageText" class="block text-xs font-extrabold uppercase tracking-wider mt-5 mb-2">Твоё послание</label>
+                <textarea id="messageText" name="message" maxlength="500" required rows="5" placeholder="Что ты хотел(а) бы передать следующим поколениям?" class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 text-sm bg-white focus:border-ornamentRed outline-none resize-y"></textarea>
+                <div class="flex justify-between items-center mt-2 text-xs text-mutedText">
+                    <span>Максимум 500 символов</span>
+                    <span id="charCount">0 / 500</span>
+                </div>
+
+                <label class="flex gap-3 items-start mt-5 text-xs text-mutedText">
+                    <input id="consentCheck" type="checkbox" required class="mt-1 accent-red-600">
+                    <span>Я проверил(а) текст и не включил(а) в него чужие личные данные.</span>
+                </label>
+
+                <button type="submit" class="w-full mt-6 bg-darkText text-white rounded-lg py-4 text-xs font-extrabold uppercase tracking-widest hover:bg-ornamentRed transition">
+                    <i class="fa-solid fa-paper-plane mr-2"></i> Сохранить послание
+                </button>
+                <p id="formStatus" class="text-sm mt-4" role="status" aria-live="polite"></p>
+            </form>
+
+            <div class="reveal">
+                <div class="flex flex-col sm:flex-row gap-3 justify-between sm:items-center mb-5">
+                    <div>
+                        <h3 class="text-2xl font-serif-bold">Послания посетителей</h3>
+                        <p class="text-xs text-mutedText mt-1"><span id="messageCount">0</span> записей на этом устройстве</p>
+                    </div>
+                    <button id="exportMessages" type="button" class="px-4 py-2 border-2 border-gray-200 rounded-lg text-xs font-bold hover:border-darkText">
+                        <i class="fa-solid fa-download mr-2"></i> Экспорт записей
+                    </button>
+                </div>
+
+                <div class="ledger-tools p-4 rounded-xl border border-gray-200 mb-5 flex flex-col sm:flex-row gap-3">
+                    <input id="messageSearch" type="search" placeholder="Поиск по имени или тексту..." class="flex-1 min-w-0 border border-gray-200 rounded-lg px-4 py-3 text-sm bg-white">
+                    <select id="messageFilter" class="border border-gray-200 rounded-lg px-4 py-3 text-sm bg-white">
+                        <option value="all">Все темы</option>
+                        <option value="Семья и традиции">Семья и традиции</option>
+                        <option value="Историческая память">Историческая память</option>
+                        <option value="Культура">Культура</option>
+                        <option value="Будущее">Будущее</option>
+                        <option value="Моё послание">Моё послание</option>
+                    </select>
+                </div>
+
+                <div id="messageList" class="space-y-4" aria-live="polite"></div>
+                <p id="emptyMessages" class="hidden text-sm text-mutedText p-8 text-center border-2 border-dashed border-gray-200 rounded-xl">Пока нет записей. Стань первым человеком, который оставит послание!</p>
+            </div>
+        </div>
+    </section>
+
+        <footer class="bg-darkText text-white px-6 py-12">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row gap-8 justify-between">
+                <div>
+                    <a href="#hero" class="text-lg font-extrabold tracking-tight">СВЯЗЬ ПОКОЛЕНИЙ</a>
+                    <p class="text-xs text-white/60 mt-2">Республика Беларусь · Память · Люди · Время</p>
+                </div>
+                <nav class="flex flex-wrap gap-x-6 gap-y-3 text-xs text-white/75">
+                    <a href="#philosophy" class="hover:text-red-300">Ценности</a>
+                    <a href="#timeline" class="hover:text-red-300">Хроника</a>
+                    <a href="#regions" class="hover:text-red-300">Регионы</a>
+                    <a href="#dialogue" class="hover:text-red-300">Диалог поколений</a>
+                    <a href="#ledger" class="hover:text-red-300">Книга посланий</a>
+                </nav>
+            </div>
+            <div class="visual-divider mt-8 mb-5"></div>
+            <div class="flex flex-col sm:flex-row gap-3 justify-between text-[11px] text-white/50">
+                <span>© <span id="currentYear"></span> Связь поколений</span>
+                <a href="#hero" class="hover:text-white">Вернуться наверх ↑</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* ==========================================
+           ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+        ========================================== */
+
+        const $ = (selector, root = document) => root.querySelector(selector);
+        const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+
+        function escapeHTML(value) {
+            return String(value).replace(/[&<>"']/g, character => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            })[character]);
+        }
+
+        /* ==========================================
+           ПРОГРЕСС ПРОКРУТКИ
+        ========================================== */
+
+        const progressBar = $('#progressBar');
+
+        function updateScrollProgress() {
+            const scrollableHeight =
+                document.documentElement.scrollHeight - window.innerHeight;
+
+            const progress = scrollableHeight > 0
+                ? (window.scrollY / scrollableHeight) * 100
+                : 0;
+
+            progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+        }
+
+        window.addEventListener('scroll', updateScrollProgress, { passive: true });
+        window.addEventListener('resize', updateScrollProgress);
+        updateScrollProgress();
+
+        /* ==========================================
+           ПОЯВЛЕНИЕ БЛОКОВ ПРИ ПРОКРУТКЕ
+        ========================================== */
+
+        const revealElements = $$('.reveal');
+
+        if ('IntersectionObserver' in window) {
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.08,
+                rootMargin: '0px 0px -30px 0px'
+            });
+
+            revealElements.forEach(element => revealObserver.observe(element));
+        } else {
+            revealElements.forEach(element => element.classList.add('active'));
+        }
+
+        /* ==========================================
+           МОДАЛЬНЫЕ ОКНА
+        ========================================== */
+
+        let previouslyFocusedElement = null;
+
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (!modal) return;
+
+            previouslyFocusedElement = document.activeElement;
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+
+            const closeButton = $('button[onclick^="closeModal"]', modal);
+            if (closeButton) closeButton.focus();
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (!modal) return;
+
+            modal.classList.add('hidden');
+
+            if (!$('[role="dialog"]:not(.hidden)')) {
+                document.body.style.overflow = '';
+            }
+
+            if (previouslyFocusedElement &&
+                typeof previouslyFocusedElement.focus === 'function') {
+                previouslyFocusedElement.focus();
+            }
+        }
+
+        $$('[role="dialog"]').forEach(modal => {
+            modal.addEventListener('click', event => {
+                if (event.target === modal) closeModal(modal.id);
+            });
+        });
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape') {
+                const openedModals = $$('[role="dialog"]:not(.hidden)');
+                const lastModal = openedModals[openedModals.length - 1];
+
+                if (lastModal) closeModal(lastModal.id);
+            }
+        });
+
+        /* ==========================================
+           ФИЛЬТР ИСТОРИЧЕСКОЙ ХРОНИКИ
+        ========================================== */
+
+        const timelineFilters = $$('.timeline-filter');
+        const timelineItems = $$('.timeline-item');
+
+        timelineFilters.forEach(button => {
+            button.addEventListener('click', () => {
+                const filter = button.dataset.filter;
+
+                timelineFilters.forEach(item => {
+                    item.classList.remove('bg-darkText', 'text-white', 'border-darkText');
+                    item.classList.add('border-gray-200');
+                    item.setAttribute('aria-pressed', 'false');
+                });
+
+                button.classList.add('bg-darkText', 'text-white', 'border-darkText');
+                button.classList.remove('border-gray-200');
+                button.setAttribute('aria-pressed', 'true');
+
+                timelineItems.forEach(item => {
+                    const matches = filter === 'all' || item.dataset.cat === filter;
+                    item.classList.toggle('hidden', !matches);
+                });
+            });
+        });
+
+        /* ==========================================
+           ИНТЕРАКТИВНАЯ КАРТА РЕГИОНОВ
+        ========================================== */
+
+        const regionData = {
+            brest: {
+                title: 'Брестская область',
+                description: 'Западный регион Беларуси с богатой историей, природными территориями и памятниками разных эпох.',
+                places: 'Брестская крепость-герой, Беловежская пуща, Каменецкая башня.'
+            },
+            vitebsk: {
+                title: 'Витебская область',
+                description: 'Регион, связанный с именами художников, музыкальными традициями, историческими городами и озёрными ландшафтами.',
+                places: 'Витебск, Полоцк, музей Марка Шагала, Браславские озёра.'
+            },
+            gomel: {
+                title: 'Гомельская область',
+                description: 'Юго-восточный регион с дворцовой архитектурой, природным наследием Полесья и памятными местами.',
+                places: 'Гомельский дворцово-парковый ансамбль, Мозырь, Туров.'
+            },
+            grodno: {
+                title: 'Гродненская область',
+                description: 'Регион с многослойной историей, старинной архитектурой, замками и культурными традициями.',
+                places: 'Старый замок в Гродно, Лидский замок, Мирский замок.'
+            },
+            minsk: {
+                title: 'Минская область',
+                description: 'Центральный регион страны, где соседствуют исторические усадьбы, памятники разных эпох и современные культурные пространства.',
+                places: 'Несвижский дворцово-парковый комплекс, Заславль, исторические места Минска.'
+            },
+            mogilev: {
+                title: 'Могилёвская область',
+                description: 'Восточный регион с историческими городами, архитектурными памятниками и ремесленными традициями.',
+                places: 'Могилёвская ратуша, Бобруйская крепость, исторический центр Мстиславля.'
+            }
+        };
+
+        const regionTitle = $('#regionTitle');
+        const regionDescription = $('#regionDescription');
+        const regionPlaces = $('#regionPlaces');
+
+        function selectRegion(regionId) {
+            const region = regionData[regionId];
+            if (!region) return;
+
+            regionTitle.textContent = region.title;
+            regionDescription.textContent = region.description;
+            regionPlaces.textContent = region.places;
+
+            $$('.map-region').forEach(element => {
+                const active = element.dataset.region === regionId;
+                element.classList.toggle('active', active);
+                element.setAttribute('aria-pressed', String(active));
+            });
+
+            $$('.region-button').forEach(button => {
+                const active = button.dataset.region === regionId;
+                button.classList.toggle('bg-darkText', active);
+                button.classList.toggle('text-white', active);
+                button.setAttribute('aria-pressed', String(active));
+            });
+        }
+
+        $$('.map-region').forEach(region => {
+            region.addEventListener('click', () => selectRegion(region.dataset.region));
+
+            region.addEventListener('keydown', event => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    selectRegion(region.dataset.region);
+                }
+            });
+        });
+
+        $$('.region-button').forEach(button => {
+            button.addEventListener('click', () => selectRegion(button.dataset.region));
+        });
+
+        selectRegion('minsk');
+
+        /* ==========================================
+           ВОПРОСЫ ДЛЯ СЕМЕЙНОГО ДИАЛОГА
+        ========================================== */
+
+        const familyQuestions = [
+            'Какое воспоминание из детства ты хотел бы сохранить навсегда?',
+            'Какая семейная традиция передаётся у вас из поколения в поколение?',
+            'Какое место в Беларуси имеет для вашей семьи особое значение?',
+            'Какой совет старшего поколения однажды тебе очень помог?',
+            'Какую историю о своих предках ты хотел бы узнать подробнее?',
+            'Какой предмет в вашей семье хранит особую память?',
+            'Что бы ты хотел рассказать о сегодняшнем дне своим потомкам?',
+            'Какое качество ты больше всего ценишь в своей семье?'
+        ];
+
+        let lastQuestionIndex = -1;
+
+        $('#newQuestionButton').addEventListener('click', () => {
+            let nextIndex;
+
+            do {
+                nextIndex = Math.floor(Math.random() * familyQuestions.length);
+            } while (familyQuestions.length > 1 && nextIndex === lastQuestionIndex);
+
+            lastQuestionIndex = nextIndex;
+            $('#familyQuestion').textContent = familyQuestions[nextIndex];
+        });
+
+        /* ==========================================
+           КНИГА ПОСЛАНИЙ
+           Сохранение на текущем устройстве
+        ========================================== */
+
+        const STORAGE_KEY = 'svyazPokoleniyMessagesV1';
+        const MAX_MESSAGES = 300;
+        let messages = loadMessages();
+
+        function loadMessages() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (!saved) return [];
+
+                const parsed = JSON.parse(saved);
+                if (!Array.isArray(parsed)) return [];
+
+                return parsed.filter(item =>
+                    item &&
+                    typeof item.author === 'string' &&
+                    typeof item.message === 'string' &&
+                    typeof item.category === 'string'
+                );
+            } catch (error) {
+                console.warn('Не удалось прочитать сохранённые записи:', error);
+                return [];
+            }
+        }
+
+        function saveMessages() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+                return true;
+            } catch (error) {
+                console.error('Не удалось сохранить записи:', error);
+                return false;
+            }
+        }
+
+        function formatDate(dateValue) {
+            const date = new Date(dateValue);
+
+            if (Number.isNaN(date.getTime())) return 'Дата неизвестна';
+
+            return new Intl.DateTimeFormat('ru-RU', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            }).format(date);
+        }
+
+        function renderMessages() {
+            const list = $('#messageList');
+            const search = $('#messageSearch').value.trim().toLocaleLowerCase('ru');
+            const category = $('#messageFilter').value;
+
+            const filteredMessages = messages.filter(item => {
+                const matchesSearch =
+                    item.author.toLocaleLowerCase('ru').includes(search) ||
+                    item.message.toLocaleLowerCase('ru').includes(search);
+
+                const matchesCategory =
+                    category === 'all' || item.category === category;
+
+                return matchesSearch && matchesCategory;
+            });
+
+            list.replaceChildren();
+            $('#messageCount').textContent = messages.length;
+            $('#emptyMessages').classList.toggle('hidden', filteredMessages.length > 0);
+
+            if (filteredMessages.length === 0) {
+                $('#emptyMessages').textContent = messages.length
+                    ? 'По выбранным условиям ничего не найдено.'
+                    : 'Пока нет записей. Стань первым человеком, который оставит послание!';
+            }
+
+            filteredMessages.forEach(item => {
+                const card = document.createElement('article');
+                card.className = 'ledger-card heavy-card rounded-xl p-6';
+
+                const header = document.createElement('div');
+                header.className = 'flex flex-wrap justify-between items-start gap-3';
+
+                const authorBlock = document.createElement('div');
+
+                const author = document.createElement('h4');
+                author.className = 'font-extrabold text-darkText';
+                author.textContent = item.author;
+
+                const date = document.createElement('p');
+                date.className = 'text-xs text-mutedText mt-1';
+                date.textContent = formatDate(item.date);
+
+                authorBlock.append(author, date);
+
+                const categoryBadge = document.createElement('span');
+                categoryBadge.className = 'text-[10px] uppercase tracking-wider font-extrabold text-ornamentRed bg-ornamentRedSoft px-3 py-2 rounded-full';
+                categoryBadge.textContent = item.category;
+
+                header.append(authorBlock, categoryBadge);
+
+                const message = document.createElement('p');
+                message.className = 'text-sm leading-relaxed mt-5 whitespace-pre-wrap';
+                message.textContent = item.message;
+
+                const footer = document.createElement('div');
+                footer.className = 'flex items-center justify-between mt-5 pt-4 border-t border-gray-200';
+
+                const likeButton = document.createElement('button');
+                likeButton.type = 'button';
+                likeButton.className = 'text-xs font-bold text-mutedText hover:text-ornamentRed transition';
+                likeButton.setAttribute('aria-label', 'Отметить послание');
+
+                const liked = Boolean(item.liked);
+                likeButton.innerHTML = `<i class="${liked ? 'fa-solid' : 'fa-regular'} fa-heart mr-2"></i>${Number(item.likes) || 0}`;
+                likeButton.setAttribute('aria-pressed', String(liked));
+
+                likeButton.addEventListener('click', () => {
+                    item.liked = !item.liked;
+                    item.likes = Math.max(0, Number(item.likes) || 0) + (item.liked ? 1 : -1);
+                    saveMessages();
+                    renderMessages();
+                });
+
+                footer.append(likeButton);
+                card.append(header, message, footer);
+                list.append(card);
+            });
+        }
+
+        $('#messageText').addEventListener('input', event => {
+            $('#charCount').textContent = `${event.target.value.length} / 500`;
+        });
+
+        $('#messageSearch').addEventListener('input', renderMessages);
+        $('#messageFilter').addEventListener('change', renderMessages);
+
+        $('#ledgerForm').addEventListener('submit', event => {
+            event.preventDefault();
+
+            const author = $('#authorName').value.trim();
+            const category = $('#messageCategory').value;
+            const message = $('#messageText').value.trim();
+            const consent = $('#consentCheck').checked;
+            const status = $('#formStatus');
+
+            if (!author || !message) {
+                status.textContent = 'Заполни имя и текст послания.';
+                status.className = 'text-sm mt-4 text-red-600';
+                return;
+            }
+
+            if (!consent) {
+                status.textContent = 'Подтверди, что в записи нет чужих личных данных.';
+                status.className = 'text-sm mt-4 text-red-600';
+                return;
+            }
+
+            if (message.length > 500 || author.length > 50) {
+                status.textContent = 'Проверь длину имени и послания.';
+                status.className = 'text-sm mt-4 text-red-600';
+                return;
+            }
+
+            if (messages.length >= MAX_MESSAGES) {
+                status.textContent = 'Достигнут лимит записей на этом устройстве. Экспортируй старые записи перед добавлением новых.';
+                status.className = 'text-sm mt-4 text-red-600';
+                return;
+            }
+
+            const newMessage = {
+                id: (window.crypto && crypto.randomUUID)
+                    ? crypto.randomUUID()
+                    : `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+                author,
+                category,
+                message,
+                date: new Date().toISOString(),
+                likes: 0,
+                liked: false
+            };
+
+            messages.unshift(newMessage);
+
+            if (!saveMessages()) {
+                messages.shift();
+                status.textContent = 'Браузер не смог сохранить запись. Возможно, память заполнена или сохранение ограничено настройками.';
+                status.className = 'text-sm mt-4 text-red-600';
+                return;
+            }
+
+            $('#ledgerForm').reset();
+            $('#charCount').textContent = '0 / 500';
+
+            status.textContent = 'Послание сохранено на этом устройстве!';
+            status.className = 'text-sm mt-4 text-green-700';
+
+            $('#messageSearch').value = '';
+            $('#messageFilter').value = 'all';
+
+            renderMessages();
+        });
+
+        /* ==========================================
+           ЭКСПОРТ ЗАПИСЕЙ В JSON
+        ========================================== */
+
+        $('#exportMessages').addEventListener('click', () => {
+            if (messages.length === 0) {
+                $('#formStatus').textContent = 'Пока нечего экспортировать.';
+                $('#formStatus').className = 'text-sm mt-4 text-mutedText';
+                return;
+            }
+
+            const blob = new Blob(
+                [JSON.stringify(messages, null, 2)],
+                { type: 'application/json;charset=utf-8' }
+            );
+
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+
+            link.href = url;
+            link.download = 'kniga-poslaniy.json';
+            document.body.append(link);
+            link.click();
+            link.remove();
+
+            URL.revokeObjectURL(url);
+        });
+
+        /* ==========================================
+           ДЕКОРАТИВНАЯ АНИМАЦИЯ ПЕРВОГО ЭКРАНА
+        ========================================== */
+
+        const canvas = $('#heroCanvas');
+        const context = canvas.getContext('2d');
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (context && !reducedMotion) {
+            let particles = [];
+            let animationFrame = null;
+            let canvasWidth = 0;
+            let canvasHeight = 0;
+
+            function resizeCanvas() {
+                const rect = canvas.getBoundingClientRect();
+                const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+
+                canvasWidth = rect.width;
+                canvasHeight = rect.height;
+
+                canvas.width = Math.floor(canvasWidth * pixelRatio);
+                canvas.height = Math.floor(canvasHeight * pixelRatio);
+
+                context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+
+                const particleCount = Math.min(65, Math.floor(canvasWidth / 18));
+
+                particles = Array.from({ length: particleCount }, () => ({
+                    x: Math.random() * canvasWidth,
+                    y: Math.random() * canvasHeight,
+                    radius: Math.random() * 1.8 + .4,
+                    speed: Math.random() * .25 + .08,
+                    alpha: Math.random() * .35 + .08
+                }));
+            }
+
+            function drawParticles() {
+                context.clearRect(0, 0, canvasWidth, canvasHeight);
+
+                particles.forEach(particle => {
+                    particle.y -= particle.speed;
+
+                    if (particle.y < -5) {
+                        particle.y = canvasHeight + 5;
+                        particle.x = Math.random() * canvasWidth;
+                    }
+
+                    context.beginPath();
+                    context.arc(
+                        particle.x,
+                        particle.y,
+                        particle.radius,
+                        0,
+                        Math.PI * 2
+                    );
+
+                    context.fillStyle = `rgba(220,38,38,${particle.alpha})`;
+                    context.fill();
+                });
+
+                animationFrame = requestAnimationFrame(drawParticles);
+            }
+
+            resizeCanvas();
+            drawParticles();
+
+            window.addEventListener('resize', resizeCanvas);
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    if (animationFrame) cancelAnimationFrame(animationFrame);
+                    animationFrame = null;
+                } else if (!animationFrame) {
+                    drawParticles();
+                }
+            });
+        }
+
+        /* ==========================================
+           ИНИЦИАЛИЗАЦИЯ
+        ========================================== */
+
+        $('#currentYear').textContent = new Date().getFullYear();
+        renderMessages();
+
+        // Делаем фильтр «Все события» выбранным по умолчанию.
+        const allTimelineFilter = $('.timeline-filter[data-filter="all"]');
+        if (allTimelineFilter) {
+            allTimelineFilter.setAttribute('aria-pressed', 'true');
+        }
+    </script>
+</body>
+</html>
